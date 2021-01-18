@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log>
+	<trace>
+		<date key="REG_DATE" value="2011-10-01T00:38:44.546+02:00"/>
+		<string key="concept:name" value="173688"/>
+		<string key="AMOUNT_REQ" value="20000"/>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_SUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T00:38:44.546+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_PARTLYSUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T00:38:44.880+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<date key="REG_DATE" value="2011-10-01T08:10:30.287+02:00"/>
+		<string key="concept:name" value="173694"/>
+		<string key="AMOUNT_REQ" value="7000"/>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_SUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T08:10:30.287+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_PARTLYSUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T08:10:30.591+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_PREACCEPTED"/>
+			<date key="time:timestamp" value="2011-10-02T08:11:13.026+02:00"/>
+		</event>
+	</trace>
+</log>
