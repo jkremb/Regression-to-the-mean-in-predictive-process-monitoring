@@ -8,11 +8,14 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
 
-dataset = pd.read_csv('processedData.csv')
+dataset = pd.read_csv('data_withFasterParser.csv')
 
-'''
+# pd.set_option('display.max_columns', None)
+print(dataset.head(5))
+
+
 ############ split data into train and test sets 80/20 ##############
-train_size = int(len(data) * .8)
+train_size = int(len(dataset) * .8)
 
 train_data = dataset[:train_size]
 test_data = dataset[train_size:]
@@ -124,4 +127,3 @@ plt.show()
 # plt.xlabel('Prediction Error [trace time remaining]')
 # _ = plt.ylabel('Count')
 # plt.show()
-'''

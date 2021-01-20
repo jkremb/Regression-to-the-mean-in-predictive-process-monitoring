@@ -64,15 +64,10 @@ dataset['W_Wijzigen contractgegevens-SCHEDULE'] = ''
 print(dataset)
 
 
-# for x in range(0,20):
-#     dataset['A_SUBMITTED-COMPLETE'][x] = origin[x].count("'COMPLETE', 'A_SUBMITTED'")
-#     dataset['A_PARTLYSUBMITTED-COMPLETE'][x] = origin[x].count("'COMPLETE', 'A_PARTLYSUBMITTED'")
-#     dataset['W_Nabellen offertes-START'][x] = origin[x].count("'START', 'W_Nabellen offertes'")
-#     dataset['W_Afhandelen leads-SCHEDULE'][x] = origin[x].count("'SCHEDULE', 'W_Afhandelen leads'")
-
 # by origin i mean events
 origin = dataset.pop('events')
 
+count = 1
 for x in range(0,len(dataset)):
     dataset['W_Completeren aanvraag-COMPLETE'][x] = origin[x].count("'COMPLETE', 'W_Completeren aanvraag'")
     dataset['W_Completeren aanvraag-START'][x] = origin[x].count("'START', 'W_Completeren aanvraag'")
@@ -110,10 +105,11 @@ for x in range(0,len(dataset)):
     dataset['W_Beoordelen fraude-COMPLETE'][x] = origin[x].count("'COMPLETE', 'W_Beoordelen fraude'")
     dataset['W_Beoordelen fraude-SCHEDULE'][x] = origin[x].count("'SCHEDULE', 'W_Beoordelen fraude'")
     dataset['W_Wijzigen contractgegevens-SCHEDULE'][x] = origin[x].count("'SCHEDULE', 'W_Wijzigen contractgegevens'")
+    print('.')
+    print(count)
+    count = count + 1
 
 print(dataset)
-dataset.to_csv('processedData.csv')
+# dataset.to_csv('processedData.csv')
 
 # print(dataset.tail(6))
-# timeAndNumOfEvents.plot.scatter(x='numberOfEvents', y='remainingTraceTime')
-# plt.show();
