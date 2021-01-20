@@ -8,34 +8,14 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
 
-data = pd.read_csv('data.csv')
-# data = shuffle(data, random_state=22)
-# print(data.head(6))
-
-## encode data
-## format to matrix where 0 if certain event is not there, 1 if certain event is there
-## use sklearn.MultiLabelBinarizer() for this
-
-
-
-################### simplifying code for sake of learning
-timeAndNumOfEvents = data.dropna() # cleans the dataset of any incomplete datapoints
-# timeAndNumOfEvents = data.drop(labels='loanAmount', axis='columns')
-timeAndNumOfEvents = timeAndNumOfEvents.drop(labels='events', axis='columns')
-# timeAndNumOfEvents.dropna()   
-print(timeAndNumOfEvents.tail(6))
-
-
+dataset = pd.read_csv('processedData.csv')
 
 '''
-# timeAndNumOfEvents.plot.scatter(x='numberOfEvents', y='remainingTraceTime')
-# plt.show();
-
 ############ split data into train and test sets 80/20 ##############
 train_size = int(len(data) * .8)
 
-train_data = timeAndNumOfEvents[:train_size]
-test_data = timeAndNumOfEvents[train_size:]
+train_data = dataset[:train_size]
+test_data = dataset[train_size:]
 # print(test_data)
 
 
@@ -48,12 +28,13 @@ test_labels = test_data.pop('remainingTraceTime')
 
 ################# normalize data ########################
 train_stats = train_data.describe()
-# train_stats.pop('traceTimeInMin')
+
+train_stats.pop('remainingTraceTime')
 train_stats = train_stats.transpose()
 
 
 def norm(x):
-    return (x - train_stats['median']) / train_stats['std']
+    return (x - train_stats['mean']) / train_stats['std']   #### normalize with median? how?
 normed_train_data = norm(train_data)
 normed_test_data = norm(test_data)
 

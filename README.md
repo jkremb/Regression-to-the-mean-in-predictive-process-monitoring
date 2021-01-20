@@ -14,3 +14,7 @@ features/attributes
 
 
 python version 3.7.9
+
+first use xml-reader.py to extract relevant data into data.csv
+then use data-processor.py to transform event data into numeric form
+then use model-builder.py to train your model from processedData.csv
