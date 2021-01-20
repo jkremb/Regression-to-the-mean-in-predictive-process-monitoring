@@ -13,8 +13,14 @@
 		<event>
 			<string key="org:resource" value="112"/>
 			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_SUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-17T00:38:44.546+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
 			<string key="concept:name" value="A_PARTLYSUBMITTED"/>
-			<date key="time:timestamp" value="2011-10-01T00:38:44.880+02:00"/>
+			<date key="time:timestamp" value="2011-11-02T00:38:44.880+02:00"/>
 		</event>
 	</trace>
 	<trace>
@@ -31,13 +37,100 @@
 			<string key="org:resource" value="112"/>
 			<string key="lifecycle:transition" value="COMPLETE"/>
 			<string key="concept:name" value="A_PARTLYSUBMITTED"/>
-			<date key="time:timestamp" value="2011-10-01T08:10:30.591+02:00"/>
+			<date key="time:timestamp" value="2011-10-02T08:10:30.591+02:00"/>
 		</event>
 		<event>
 			<string key="org:resource" value="112"/>
 			<string key="lifecycle:transition" value="COMPLETE"/>
 			<string key="concept:name" value="A_PREACCEPTED"/>
-			<date key="time:timestamp" value="2011-10-02T08:11:13.026+02:00"/>
+			<date key="time:timestamp" value="2011-10-03T08:11:13.026+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<date key="REG_DATE" value="2011-10-01T09:45:37.274+02:00"/>
+		<string key="concept:name" value="173706"/>
+		<string key="AMOUNT_REQ" value="18000"/>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_SUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T09:45:37.274+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_PARTLYSUBMITTED"/>
+			<date key="time:timestamp" value="2011-10-01T09:45:37.363+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="112"/>
+			<string key="lifecycle:transition" value="SCHEDULE"/>
+			<string key="concept:name" value="W_Afhandelen leads"/>
+			<date key="time:timestamp" value="2011-10-01T09:46:18.623+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="START"/>
+			<string key="concept:name" value="W_Afhandelen leads"/>
+			<date key="time:timestamp" value="2011-10-01T10:15:43.883+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_PREACCEPTED"/>
+			<date key="time:timestamp" value="2011-10-01T10:16:48.956+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="SCHEDULE"/>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<date key="time:timestamp" value="2011-10-01T10:16:48.991+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="W_Afhandelen leads"/>
+			<date key="time:timestamp" value="2011-10-01T10:16:49.843+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="START"/>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<date key="time:timestamp" value="2011-10-01T11:49:28.183+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<date key="time:timestamp" value="2011-10-01T11:50:14.483+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="START"/>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<date key="time:timestamp" value="2011-10-01T11:50:21.451+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="10912"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<date key="time:timestamp" value="2011-10-01T11:53:55.769+02:00"/>
+		</event>
+		<event>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<string key="lifecycle:transition" value="START"/>
+			<date key="time:timestamp" value="2011-10-01T14:50:26.172+02:00"/>
+		</event>
+		<event>
+			<string key="org:resource" value="11111"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<string key="concept:name" value="A_DECLINED"/>
+			<date key="time:timestamp" value="2011-10-01T14:59:58.557+02:00"/>
+		</event>
+		<event>
+			<string key="concept:name" value="W_Completeren aanvraag"/>
+			<string key="lifecycle:transition" value="COMPLETE"/>
+			<date key="time:timestamp" value="2011-10-01T15:00:02.537+02:00"/>
 		</event>
 	</trace>
 </log>

@@ -21,11 +21,11 @@ data = pd.read_csv('data.csv')
 ## simplifying code for sake of learning
 timeAndNumOfEvents = data.drop(labels='loanAmount', axis='columns')
 timeAndNumOfEvents = timeAndNumOfEvents.drop(labels='events', axis='columns')
-timeAndNumOfEvents.dropna()
+timeAndNumOfEvents.dropna()   # cleans the dataset of any incomplete datapoints
 print(timeAndNumOfEvents.head(6))
 
-# timeAndNumOfEvents.plot.scatter(x='numberOfEvents', y='traceTimeInMin')
-## plt.show();
+# timeAndNumOfEvents.plot.scatter(x='numberOfEvents', y='remainingTraceTime')
+# plt.show();
 
 ############ split data into train and test sets 80/20 ##############
 train_size = int(len(data) * .8)
@@ -35,12 +35,12 @@ test_data = timeAndNumOfEvents[train_size:]
 # print(test_data)
 
 
-sns.pairplot(train_data[["traceTimeInMin", "numberOfEvents"]], diag_kind="kde")
+# sns.pairplot(train_data[["traceTimeInMin", "numberOfEvents"]], diag_kind="kde")
 # plt.show()
 
 ################## determining label ##################
-train_labels = train_data.pop('traceTimeInMin')
-test_labels = test_data.pop('traceTimeInMin')
+train_labels = train_data.pop('remainingTraceTime')
+test_labels = test_data.pop('remainingTraceTime')
 
 ################# normalize data ########################
 train_stats = train_data.describe()
@@ -71,7 +71,14 @@ def build_model():
 
 model = build_model()
 
-# print(model.summary())
+print(model.summary())
+
+########## testing with batch of training data ###############
+# example_batch = normed_train_data[:10]
+# example_result = model.predict(example_batch)
+# print(example_result)
+
+
 
 ################# train model ##################
 class PrintDot(keras.callbacks.Callback):
@@ -79,7 +86,7 @@ class PrintDot(keras.callbacks.Callback):
         if epoch % 100 == 0: print('')
         print('.', end='')
 
-EPOCHS = 1000
+EPOCHS = 10
 
 history = model.fit(
     normed_train_data, train_labels,
@@ -88,4 +95,20 @@ history = model.fit(
 
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
-hist.tail()
+print(hist.tail(10))
+
+########### plotting learning curves for tweaking ###########
+def plot_history(history):
+    hist = pd.DataFrame(history.history)
+    hist['epoch'] = history.epoch
+
+    plt.figure()
+    plt.xlabel('Epoch')
+    plt.ylabel('Mean Abs Error')
+    plt.plot(hist['epoch'], hist['mae'], label='Train Error')
+    plt.plot(hist['epoch'], hist['val_mae'], label='Val Error')
+    plt.legend()
+    plt.ylim([0,7000])
+
+plot_history(history)
+plt.show()

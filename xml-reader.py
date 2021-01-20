@@ -73,9 +73,10 @@ tree.parse(full_file)
 csvdata = open('data.csv', 'w', newline='',encoding='utf-8')
 csvwriter = csv.writer(csvdata);
 
-col_names = ['remainingTraceTime',  'loanAmount' , 'events']
+col_names = ['remainingTraceTime',  'loanAmount' , 'numberOfEvents','events']
 csvwriter.writerow(col_names)
 
+count = 1
 for trace in tree.findall('trace'):
     traceData = []
 
@@ -126,10 +127,13 @@ for trace in tree.findall('trace'):
 
         traceData.append(calcTimeBetweenTwoEvents(currentEventTimestamp, lastEventTimestamp))
         traceData.append(loanAmount)
+        traceData.append(len(eventList))
         traceData.append(eventList)
         
-
-        print(traceData)
+        
+        print(count)
+        count = count + 1
+        print('.')
         csvwriter.writerow(traceData)
         traceData = []
 

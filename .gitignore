@@ -1,2 +1,4 @@
 .vscode
 .data.csv
+.data_shortened.csv
+*.csv
