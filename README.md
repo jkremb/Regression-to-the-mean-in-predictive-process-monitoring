@@ -3,7 +3,7 @@
 The following is a predictive process monitoring program which aims to
 predict the 
 
-label = remaining time left on trace
+label = remaining time left on trace(remainingTraceTime)
 features/attributes
     1. current number of events in trace
     2. presence of event classifications (0 or 1)

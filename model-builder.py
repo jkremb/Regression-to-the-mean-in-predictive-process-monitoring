@@ -18,12 +18,16 @@ data = pd.read_csv('data.csv')
 
 
 
-## simplifying code for sake of learning
-timeAndNumOfEvents = data.drop(labels='loanAmount', axis='columns')
+################### simplifying code for sake of learning
+timeAndNumOfEvents = data.dropna() # cleans the dataset of any incomplete datapoints
+# timeAndNumOfEvents = data.drop(labels='loanAmount', axis='columns')
 timeAndNumOfEvents = timeAndNumOfEvents.drop(labels='events', axis='columns')
-timeAndNumOfEvents.dropna()   # cleans the dataset of any incomplete datapoints
-print(timeAndNumOfEvents.head(6))
+# timeAndNumOfEvents.dropna()   
+print(timeAndNumOfEvents.tail(6))
 
+
+
+'''
 # timeAndNumOfEvents.plot.scatter(x='numberOfEvents', y='remainingTraceTime')
 # plt.show();
 
@@ -49,7 +53,7 @@ train_stats = train_stats.transpose()
 
 
 def norm(x):
-    return (x - train_stats['mean']) / train_stats['std']
+    return (x - train_stats['median']) / train_stats['std']
 normed_train_data = norm(train_data)
 normed_test_data = norm(test_data)
 
@@ -69,6 +73,8 @@ def build_model():
 
     return model
 
+early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+
 model = build_model()
 
 print(model.summary())
@@ -86,11 +92,11 @@ class PrintDot(keras.callbacks.Callback):
         if epoch % 100 == 0: print('')
         print('.', end='')
 
-EPOCHS = 10
+EPOCHS = 200
 
 history = model.fit(
     normed_train_data, train_labels,
-    epochs=EPOCHS, validation_split=0.2, callbacks=[PrintDot()]
+    epochs=EPOCHS, validation_split=0.2, callbacks=[early_stop, PrintDot()]
 )
 
 hist = pd.DataFrame(history.history)
@@ -108,7 +114,33 @@ def plot_history(history):
     plt.plot(hist['epoch'], hist['mae'], label='Train Error')
     plt.plot(hist['epoch'], hist['val_mae'], label='Val Error')
     plt.legend()
-    plt.ylim([0,7000])
+    plt.ylim([12000,16000])
 
 plot_history(history)
 plt.show()
+
+############ Finding mean abs error #################
+loss, mae, mse = model.evaluate(normed_test_data, test_labels, verbose=0)
+
+print("Testing set Mean Abs Error: {:5.2f} minutes remaining".format(mae))
+
+############# Predicting time remaining values using testing set ###############
+test_predictions = model.predict(normed_test_data).flatten()
+
+plt.scatter(test_labels, test_predictions)
+plt.xlabel('True Values [trace time remaining]')
+plt.ylabel('Predicted Values [trace time remaining]')
+plt.axis('equal')
+plt.axis('square')
+plt.xlim([0,plt.xlim()[1]])
+plt.ylim([0,plt.ylim()[1]])
+_ = plt.plot([-100, 100], [-100, 100])
+plt.show()
+
+########## error testing (Gaussian normal dist would be perfect) ############
+# error = test_predictions - test_labels
+# plt.hist(error, bin = 25)
+# plt.xlabel('Prediction Error [trace time remaining]')
+# _ = plt.ylabel('Count')
+# plt.show()
+'''
