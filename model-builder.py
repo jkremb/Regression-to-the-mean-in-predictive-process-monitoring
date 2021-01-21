@@ -77,21 +77,50 @@ history = linear_model.fit(
     # Calculate validation results on 20% of the training data
     validation_split = 0.2)
 
+
+
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
 print(hist.tail())
 
-def plot_loss(history):
-    plt.plot(history.history['loss'], label='loss')
-    plt.plot(history.history['val_loss'], label='val_loss')
-    plt.ylim([8000, 14000])
-    plt.xlabel('Epoch')
-    plt.ylabel('Error [Trace Time Remaining]')
-    plt.legend()
-    plt.grid(True)
+##################### plot the loss curves ##############
+# def plot_loss(history):
+#     plt.plot(history.history['loss'], label='loss')
+#     plt.plot(history.history['val_loss'], label='val_loss')
+#     plt.ylim([8000, 14000])
+#     plt.xlabel('Epoch')
+#     plt.ylabel('Error [Trace Time Remaining]')
+#     plt.legend()
+#     plt.grid(True)
 
-plot_loss(history)
-plt.show()
+# plot_loss(history)
+# plt.show()
+
+################# predictions on test set ##################
+
+test_predictions = linear_model.predict(test_features).flatten()
+
+def plot_prediction():
+    a = plt.axes(aspect='equal')
+    plt.scatter(test_labels, test_predictions)
+    plt.xlabel('True Values [Remaining time]')
+    plt.ylabel('Predictions [Remaining time]')
+    lims = [0, 200000]
+    plt.xlim(lims)
+    plt.ylim(lims)
+    _ = plt.plot(lims, lims)
+    plt.show()
+    
+plot.prediction()
+
+# ############## save the model
+
+# history.save('model')
+
+
+# test_results = {}
+# test_results['linear_model'] = linear_model.evaluate(test_features, test_labels, verbose=1)
+# print(test_results)
 
 '''
 def build_model():
