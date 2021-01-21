@@ -24,7 +24,6 @@ train_size = int(len(dataset) * .8)
 
 train_data = dataset[:train_size]
 test_data = dataset[train_size:]
-# print(train_data[:10])
 
 ################## separate label ##################
 train_features = train_data.copy()
@@ -36,14 +35,6 @@ test_labels = test_features.pop('remainingTraceTime')
 ################# normalize data ########################
 normalizer = preprocessing.Normalization()
 normalizer.adapt(np.array(train_features))
-
-# print(normalizer.mean.numpy())
-
-# first = np.array(train_features[:1])
-# with np.printoptions(precision=2, suppress=True):
-#   print('First example:', first)
-#   print()
-#   print('Normalized:', normalizer(first).numpy())
 
 ################## build model (Deep neural network) #############
 def build_and_compile_model(norm):
@@ -65,7 +56,7 @@ dnn_model.summary()
 
 history = dnn_model.fit(
     train_features, train_labels, 
-    epochs=20,
+    epochs=100,
     # suppress logging
     verbose=1,
     # Calculate validation results on 20% of the training data
@@ -102,97 +93,42 @@ def acc_loss(history):
 acc_loss(history)
 plt.show()
 
+###################### save the model for later use ###########
+dnn_model.save('dnn_model_saved.h5')
+
+
 ################# predictions on test set ##################
 
 # try out on single prediction point
-prediction_point = pd.read_csv('testingpoint.csv')
-prediction_point_labels = prediction_point.pop('remainingTraceTime')
-print(prediction_point)
+# prediction_point = pd.read_csv('testingpoint.csv')
+# print('Flag 2')
+# prediction_point_labels = prediction_point.pop('remainingTraceTime')
+# print('FLag 3')
+# print(prediction_point)
 
-# test_predictions = dnn_model.predict(test_features).flatten()
-predictions_forOnePoint = []
-for x in range(1,1000):
+# # test_predictions = dnn_model.predict(test_features).flatten()
+# # test_predictions = dnn_model.predict(prediction_point).flatten()
+# print('flag 4')
+# predictions_forOnePoint = []
+# for x in range(1,1000):
+#     predictions_forOnePoint.append(dnn_model.predict(prediction_point).flatten())
+# print(predictions_forOnePoint)
 
-    # test_predictions = dnn_model.predict(prediction_point).flatten()
-print(test_predictions)
+# # plt.hist(predictions_forOnePoint, bins=100)
+# # plt.xlabel('[Remaining time of datapoint x]')
+# # _ = plt.ylabel('Count')
+# # plt.show()
 
-def plot_prediction():
-    a = plt.axes(aspect='equal')
-    plt.scatter(prediction_point_labels, test_predictions)
-    # plt.scatter(test_labels, test_predictions)
-    plt.xlabel('True Values [Remaining time]')
-    plt.ylabel('Predictions [Remaining time]')
-    lims = [0, 75000]
-    plt.xlim(lims)
-    plt.ylim(lims)
-    _ = plt.plot(lims, lims)
-    plt.show()
+# def plot_prediction():
+#     a = plt.axes(aspect='equal')
+#     plt.scatter(prediction_point_labels, predictions_forOnePoint)
+#     # plt.scatter(test_labels, test_predictions)
+#     plt.xlabel('True Values [Remaining time]')
+#     plt.ylabel('Predictions [Remaining time]')
+#     lims = [0, 75000]
+#     plt.xlim(lims)
+#     plt.ylim(lims)
+#     _ = plt.plot(lims, lims)
+#     plt.show()
     
-plot_prediction()
-
-
-################ error distribution ################
-# error = test_predictions - test_labels
-error = test_predictions - prediction_point_labels
-plt.hist(error, bins=100)
-plt.xlabel('Prediction Error [Remaining time]')
-_ = plt.ylabel('Count')
-plt.show()
-
-
-################ Regression to the mean postprocessing ################
-
-# prediction from model * confidence from model + (median/all remaining times)*(1-CI)
-# = prediction with rttm accounted for
-
-# confidence intervals
-
-# def create_dropout_predict_function(model, dropout):
-#     """
-#     Create a keras function to predict with dropout
-#     model : keras model
-#     dropout : fraction dropout to apply to all layers
-    
-#     Returns
-#     predict_with_dropout : keras function for predicting with dropout
-#     """
-    
-#     # Load the config of the original model
-#     conf = model.get_config()
-#     # Add the specified dropout to all layers
-#     for layer in conf['layers']:
-#         # Dropout layers
-#         if layer["class_name"]=="Dropout":
-#             layer["config"]["rate"] = dropout
-#         # Recurrent layers with dropout
-#         elif "dropout" in layer["config"].keys():
-#             layer["config"]["dropout"] = dropout
-
-#     # Create a new model with specified dropout
-#     if type(model)==Sequential:
-#         # Sequential
-#         model_dropout = Sequential.from_config(conf)
-#     else:
-#         # Functional
-#         model_dropout = Model.from_config(conf)
-#     model_dropout.set_weights(model.get_weights()) 
-    
-#     # Create a function to predict with the dropout on
-#     predict_with_dropout = K.function(model_dropout.inputs+[K.learning_phase()], model_dropout.outputs)
-    
-#     return predict_with_dropout
-
-
-
-# dropout = 0.5
-# num_iter = 20
-# num_samples = input_data[0].shape[0]
-
-# path_to_model = "../models/pretrainedmodel.hdf5"
-# model = load_model(path_to_model)
-
-# predict_with_dropout = create_dropout_predict_function(model, dropout)
-
-# predictions = np.zeros((num_samples, num_iter))
-# for i in range(num_iter):
-#     predictions[:,i] = predict_with_dropout(input_data+[1])[0].reshape(-1)
+# plot_prediction()
