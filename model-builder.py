@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -8,11 +9,12 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
 
-dataset = pd.read_csv('data_withFasterParser.csv')
+data = pd.read_csv('data_withFasterParser.csv')
 
 # pd.set_option('display.max_columns', None)
-print(dataset.head(5))
-
+# print(dataset.head(5))
+dataset = data.dropna() # cleans the dataset of any incomplete datapoints
+dataset.multiply(1.0)
 
 ############ split data into train and test sets 80/20 ##############
 train_size = int(len(dataset) * .8)
@@ -21,34 +23,83 @@ train_data = dataset[:train_size]
 test_data = dataset[train_size:]
 # print(test_data)
 
+################## separate label ##################
+train_features = train_data.copy()
+test_features = test_data.copy()
 
-# sns.pairplot(train_data[["traceTimeInMin", "numberOfEvents"]], diag_kind="kde")
-# plt.show()
-
-################## determining label ##################
-train_labels = train_data.pop('remainingTraceTime')
-test_labels = test_data.pop('remainingTraceTime')
+train_labels = train_features.pop('remainingTraceTime')
+test_labels = test_features.pop('remainingTraceTime')
 
 ################# normalize data ########################
-train_stats = train_data.describe()
+# train_stats = train_data.describe()
+# train_stats = train_stats.transpose()
+# print(train_stats)
 
-train_stats.pop('remainingTraceTime')
-train_stats = train_stats.transpose()
+# def norm(x):
+#     return (x - train_stats['mean']) / train_stats['std']   #### normalize with median? how?
+# normed_train_data = norm(train_data)
+# normed_test_data = norm(test_data)
+# print(normed_train_data)
 
+normalizer = preprocessing.Normalization()
+normalizer.adapt(np.array(train_features))
 
-def norm(x):
-    return (x - train_stats['mean']) / train_stats['std']   #### normalize with median? how?
-normed_train_data = norm(train_data)
-normed_test_data = norm(test_data)
+# print(normalizer.mean.numpy())
 
+# first = np.array(train_features[:1])
+# with np.printoptions(precision=2, suppress=True):
+#   print('First example:', first)
+#   print()
+#   print('Normalized:', normalizer(first).numpy())
 
 ################# build model ####################
+linear_model = tf.keras.Sequential([
+    normalizer,
+    layers.Dense(units=1)
+])
 
+# print(linear_model.predict(train_features))              should this stay in? dont think so
+
+# print(linear_model.layers[1].kernel)
+
+linear_model.compile(
+    optimizer=tf.optimizers.Adam(learning_rate=0.1),
+    loss='mean_absolute_error')
+
+
+############### train model #############
+
+history = linear_model.fit(
+    train_features, train_labels, 
+    epochs=100,
+    # suppress logging
+    verbose=1,
+    # Calculate validation results on 20% of the training data
+    validation_split = 0.2)
+
+hist = pd.DataFrame(history.history)
+hist['epoch'] = history.epoch
+print(hist.tail())
+
+def plot_loss(history):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.ylim([8000, 14000])
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [Trace Time Remaining]')
+    plt.legend()
+    plt.grid(True)
+
+plot_loss(history)
+plt.show()
+
+'''
 def build_model():
     model = keras.Sequential([
         layers.Dense(64, activation=tf.nn.relu, input_shape=[len(train_data.keys())]),
         layers.Dense(64, activation=tf.nn.relu),
         layers.Dense(1)
+        # layers.Dense(1, activation=tf.nn.sigmoid)
     ])
 
     optimizer = tf.keras.optimizers.RMSprop(0.001)
@@ -57,16 +108,17 @@ def build_model():
 
     return model
 
-early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+# reinsert this later
+# early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
 
 model = build_model()
 
 print(model.summary())
 
 ########## testing with batch of training data ###############
-# example_batch = normed_train_data[:10]
-# example_result = model.predict(example_batch)
-# print(example_result)
+example_batch = normed_train_data[:10]
+example_result = model.predict(example_batch)
+print(example_result)
 
 
 
@@ -127,3 +179,4 @@ plt.show()
 # plt.xlabel('Prediction Error [trace time remaining]')
 # _ = plt.ylabel('Count')
 # plt.show()
+'''
