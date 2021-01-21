@@ -11,8 +11,6 @@ from tensorflow.keras.layers.experimental import preprocessing
 
 data = pd.read_csv('data_withFasterParser.csv')
 
-# pd.set_option('display.max_columns', None)
-# print(dataset.head(5))
 dataset = data.dropna() # cleans the dataset of any incomplete datapoints
 dataset.multiply(1.0)
 
@@ -21,7 +19,6 @@ train_size = int(len(dataset) * .8)
 
 train_data = dataset[:train_size]
 test_data = dataset[train_size:]
-# print(test_data)
 
 ################## separate label ##################
 train_features = train_data.copy()
@@ -31,16 +28,6 @@ train_labels = train_features.pop('remainingTraceTime')
 test_labels = test_features.pop('remainingTraceTime')
 
 ################# normalize data ########################
-# train_stats = train_data.describe()
-# train_stats = train_stats.transpose()
-# print(train_stats)
-
-# def norm(x):
-#     return (x - train_stats['mean']) / train_stats['std']   #### normalize with median? how?
-# normed_train_data = norm(train_data)
-# normed_test_data = norm(test_data)
-# print(normed_train_data)
-
 normalizer = preprocessing.Normalization()
 normalizer.adapt(np.array(train_features))
 
@@ -84,17 +71,17 @@ hist['epoch'] = history.epoch
 print(hist.tail())
 
 ##################### plot the loss curves ##############
-# def plot_loss(history):
-#     plt.plot(history.history['loss'], label='loss')
-#     plt.plot(history.history['val_loss'], label='val_loss')
-#     plt.ylim([8000, 14000])
-#     plt.xlabel('Epoch')
-#     plt.ylabel('Error [Trace Time Remaining]')
-#     plt.legend()
-#     plt.grid(True)
+def plot_loss(history):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.ylim([8000, 14000])
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [Trace Time Remaining]')
+    plt.legend()
+    plt.grid(True)
 
-# plot_loss(history)
-# plt.show()
+plot_loss(history)
+plt.show()
 
 ################# predictions on test set ##################
 
