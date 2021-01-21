@@ -111,7 +111,7 @@ def plot_prediction():
     _ = plt.plot(lims, lims)
     plt.show()
     
-plot.prediction()
+plot_prediction()
 
 # ############## save the model
 
