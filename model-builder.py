@@ -52,15 +52,11 @@ normalizer.adapt(np.array(train_features))
 #   print()
 #   print('Normalized:', normalizer(first).numpy())
 
-################# build model ####################
+################# build model (linear) ####################
 linear_model = tf.keras.Sequential([
     normalizer,
     layers.Dense(units=1)
 ])
-
-# print(linear_model.predict(train_features))              should this stay in? dont think so
-
-# print(linear_model.layers[1].kernel)
 
 linear_model.compile(
     optimizer=tf.optimizers.Adam(learning_rate=0.1),
@@ -105,13 +101,25 @@ def plot_prediction():
     plt.scatter(test_labels, test_predictions)
     plt.xlabel('True Values [Remaining time]')
     plt.ylabel('Predictions [Remaining time]')
-    lims = [0, 200000]
+    lims = [0, 75000]
     plt.xlim(lims)
     plt.ylim(lims)
     _ = plt.plot(lims, lims)
-    plt.show()
+    # plt.show()
     
-plot_prediction()
+# plot_prediction()
+
+
+################ error distribution ################
+error = test_predictions - test_labels
+plt.hist(error, bins=25)
+plt.xlabel('Prediction Error [Remaining time]')
+_ = plt.ylabel('Count')
+plt.show()
+
+
+
+
 
 # ############## save the model
 
