@@ -104,11 +104,22 @@ plt.show()
 
 ################# predictions on test set ##################
 
-test_predictions = dnn_model.predict(test_features).flatten()
+# try out on single prediction point
+prediction_point = pd.read_csv('testingpoint.csv')
+prediction_point_labels = prediction_point.pop('remainingTraceTime')
+print(prediction_point)
+
+# test_predictions = dnn_model.predict(test_features).flatten()
+predictions_forOnePoint = []
+for x in range(1,1000):
+
+    # test_predictions = dnn_model.predict(prediction_point).flatten()
+print(test_predictions)
 
 def plot_prediction():
     a = plt.axes(aspect='equal')
-    plt.scatter(test_labels, test_predictions)
+    plt.scatter(prediction_point_labels, test_predictions)
+    # plt.scatter(test_labels, test_predictions)
     plt.xlabel('True Values [Remaining time]')
     plt.ylabel('Predictions [Remaining time]')
     lims = [0, 75000]
@@ -121,7 +132,8 @@ plot_prediction()
 
 
 ################ error distribution ################
-error = test_predictions - test_labels
+# error = test_predictions - test_labels
+error = test_predictions - prediction_point_labels
 plt.hist(error, bins=100)
 plt.xlabel('Prediction Error [Remaining time]')
 _ = plt.ylabel('Count')
