@@ -43,7 +43,7 @@ test_predictions = dnn_model.predict(test_features).flatten()
 
 def plot_prediction():
     a = plt.axes(aspect='equal')
-    plt.scatter(test_labels, test_predictions)
+    plt.scatter(test_labels, test_predictions, facecolors='none', edgecolors='r')
     plt.xlabel('True Values [Remaining time]')
     plt.ylabel('Predictions [Remaining time]')
     lims = [0, 75000]
@@ -54,9 +54,24 @@ def plot_prediction():
     
 plot_prediction()
 
+plt.hist(test_predictions, bins=100)
+plt.xlabel('Predictions [Remaining time]')
+_ = plt.ylabel('Count')
+plt.show()
+
 ################ error distribution ################
 error = test_predictions - test_labels
+
 plt.hist(error, bins=100)
 plt.xlabel('Prediction Error [Remaining time]')
 _ = plt.ylabel('Count')
 plt.show()
+
+rmse = tf.math.sqrt(np.median(tf.square(test_predictions - test_labels)))
+print(rmse)
+
+# all_mse = np.square(test_predictions - test_labels)
+# plt.hist(all_mse, bins=100)
+# plt.xlabel('Prediction square error [Remaining time]')
+# _ = plt.ylabel('Count')
+# plt.show()

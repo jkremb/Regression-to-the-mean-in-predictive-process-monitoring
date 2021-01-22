@@ -50,9 +50,9 @@ print(test_predictions)
 
 ################ error distribution ################
 # error = test_predictions - test_labels
-# error = test_predictions - prediction_point_labels
-# plt.hist(error, bins=100)
-# plt.xlabel('Prediction Error [Remaining time]')
-# _ = plt.ylabel('Count')
-# plt.show()
+error = test_predictions - prediction_point_labels
+plt.hist(error, bins=100)
+plt.xlabel('Prediction Error [Remaining time]')
+_ = plt.ylabel('Count')
+plt.show()
 
