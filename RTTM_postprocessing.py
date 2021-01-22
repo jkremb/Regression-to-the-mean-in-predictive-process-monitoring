@@ -16,7 +16,7 @@ import numpy as np
 from keras.models import load_model
 
 ################ load model ###############
-dnn_model = keras.models.load_model('dnn_model_saved.h5')
+dnn_model = keras.models.load_model('dnn_model_saved')
 print('FLag 1 ')
 
 ################# predictions on test set ##################
@@ -30,30 +30,22 @@ print(prediction_point)
 
 # test_predictions = dnn_model.predict(test_features).flatten()
 test_predictions = dnn_model.predict(prediction_point).flatten()
-print('flag 4')
-# predictions_forOnePoint = []
-# for x in range(1,1000):
-#     prediction_point_labels.append(dnn_model.predict(prediction_point).flatten())
-# print(predictions_forOnePoint)
+print(test_predictions)
 
-# plt.hist(predictions_forOnePoint, bins=100)
-# plt.xlabel('[Remaining time of datapoint x]')
-# _ = plt.ylabel('Count')
-# plt.show()
 
-def plot_prediction():
-    a = plt.axes(aspect='equal')
-    plt.scatter(prediction_point_labels, test_predictions)
-    # plt.scatter(test_labels, test_predictions)
-    plt.xlabel('True Values [Remaining time]')
-    plt.ylabel('Predictions [Remaining time]')
-    lims = [0, 75000]
-    plt.xlim(lims)
-    plt.ylim(lims)
-    _ = plt.plot(lims, lims)
-    plt.show()
+# def plot_prediction():
+#     a = plt.axes(aspect='equal')
+#     plt.scatter(prediction_point_labels, test_predictions)
+#     # plt.scatter(test_labels, test_predictions)
+#     plt.xlabel('True Values [Remaining time]')
+#     plt.ylabel('Predictions [Remaining time]')
+#     lims = [0, 75000]
+#     plt.xlim(lims)
+#     plt.ylim(lims)
+#     _ = plt.plot(lims, lims)
+#     plt.show()
     
-plot_prediction()
+# plot_prediction()
 
 
 ################ error distribution ################

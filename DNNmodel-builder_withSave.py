@@ -94,7 +94,7 @@ acc_loss(history)
 plt.show()
 
 ###################### save the model for later use ###########
-dnn_model.save('dnn_model_saved.h5')
+dnn_model.save('dnn_model_saved')
 
 
 ################# predictions on test set ##################
