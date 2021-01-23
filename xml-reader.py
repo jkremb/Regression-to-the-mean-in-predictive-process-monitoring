@@ -55,7 +55,7 @@ def calcTotalTraceTime(trace):
 
 
 #################### parsing the XML file ####################
-file_name = 'BPI_Challenge_2012_shortened.xml'
+file_name = 'BPI_Challenge_2012_modified.xml'
 full_file = os.path.join('data', file_name)
 
 tree = ElementTree()

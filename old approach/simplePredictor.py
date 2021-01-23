@@ -19,7 +19,7 @@ from keras.models import load_model
 data = pd.read_csv('data_withFasterParser.csv')
 
 dataset = data.dropna() # cleans the dataset of any incomplete datapoints
-dataset.multiply(1.0)
+
 
 ############ split data into train and test sets 80/20 ##############
 train_size = int(len(dataset) * .8)
