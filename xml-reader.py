@@ -11,8 +11,8 @@ def calcTimeBetweenTwoEvents(firstEventTimestamp, secondEventTimestamp):
 
     returns the difference in minutes
     """
-    event1TimestampAdjusted = firstEventTimestamp[:-6]
-    event2TimestampAdjusted = secondEventTimestamp[:-6]
+    # event1TimestampAdjusted = firstEventTimestamp[:-6]
+    # event2TimestampAdjusted = secondEventTimestamp[:-6]
 
     dateformat = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -20,8 +20,8 @@ def calcTimeBetweenTwoEvents(firstEventTimestamp, secondEventTimestamp):
     # example = "2011-10-01T00:38:44.880+02:00"
     # d1 = datetime.datetime.strptime(example, dateformat)
 
-    d1 = datetime.datetime.strptime(event1TimestampAdjusted, dateformat)
-    d2 = datetime.datetime.strptime(event2TimestampAdjusted, dateformat)
+    d1 = datetime.datetime.strptime(firstEventTimestamp, dateformat)
+    d2 = datetime.datetime.strptime(secondEventTimestamp, dateformat)
     difference = d2-d1
     differenceInMin = int(difference.total_seconds())/60
 
@@ -64,12 +64,10 @@ tree.parse(full_file)
 
 ################## create corresponding csv object #############
 
-
-
 csvdata = open('data_withFasterParser.csv', 'w', newline='',encoding='utf-8')
 csvwriter = csv.writer(csvdata);
 
-col_names = ['remainingTraceTime', 'loanAmount ','firstTraceEventTimestamp','lastTraceEventTimestamp','totalPrefixLength','currentPrefixLength',' W_Completeren aanvraag-COMPLETE','W_Completeren aanvraag-START','W_Nabellen offertes-COMPLETE','W_Nabellen offertes-START','A_SUBMITTED-COMPLETE','A_PARTLYSUBMITTED-COMPLETE','W_Nabellen incomplete dossiers-COMPLETE','W_Nabellen incomplete dossiers-START','W_Valideren aanvraag-COMPLETE','W_Valideren aanvraag-START','A_DECLINED-COMPLETE','W_Completeren aanvraag-SCHEDULE','A_PREACCEPTED-COMPLETE','O_SELECTED-COMPLETE','O_CREATED-COMPLETE','O_SENT-COMPLETE','W_Nabellen offertes-SCHEDULE','W_Afhandelen leads-COMPLETE','W_Afhandelen leads-START','A_ACCEPTED-COMPLETE','W_Valideren aanvraag-SCHEDULE','A_FINALIZED-COMPLETE','W_Afhandelen leads-SCHEDULE','O_CANCELLED-COMPLETE','O_SENT_BACK-COMPLETE','A_CANCELLED-COMPLETE','W_Nabellen incomplete dossiers-SCHEDULE','A_REGISTERED-COMPLETE','A_APPROVED-COMPLETE','A_ACTIVATED-COMPLETE','O_ACCEPTED-COMPLETE','O_DECLINED-COMPLETE','W_Beoordelen fraude-START','W_Beoordelen fraude-COMPLETE','W_Beoordelen fraude-SCHEDULE','W_Wijzigen contractgegevens-SCHEDULE']
+col_names = ['remainingTraceTime', 'loanAmount','firstTraceEventTimestamp','lastTraceEventTimestamp','totalPrefixLength','currentPrefixLength',' W_Completeren aanvraag-COMPLETE','W_Completeren aanvraag-START','W_Nabellen offertes-COMPLETE','W_Nabellen offertes-START','A_SUBMITTED-COMPLETE','A_PARTLYSUBMITTED-COMPLETE','W_Nabellen incomplete dossiers-COMPLETE','W_Nabellen incomplete dossiers-START','W_Valideren aanvraag-COMPLETE','W_Valideren aanvraag-START','A_DECLINED-COMPLETE','W_Completeren aanvraag-SCHEDULE','A_PREACCEPTED-COMPLETE','O_SELECTED-COMPLETE','O_CREATED-COMPLETE','O_SENT-COMPLETE','W_Nabellen offertes-SCHEDULE','W_Afhandelen leads-COMPLETE','W_Afhandelen leads-START','A_ACCEPTED-COMPLETE','W_Valideren aanvraag-SCHEDULE','A_FINALIZED-COMPLETE','W_Afhandelen leads-SCHEDULE','O_CANCELLED-COMPLETE','O_SENT_BACK-COMPLETE','A_CANCELLED-COMPLETE','W_Nabellen incomplete dossiers-SCHEDULE','A_REGISTERED-COMPLETE','A_APPROVED-COMPLETE','A_ACTIVATED-COMPLETE','O_ACCEPTED-COMPLETE','O_DECLINED-COMPLETE','W_Beoordelen fraude-START','W_Beoordelen fraude-COMPLETE','W_Beoordelen fraude-SCHEDULE','W_Wijzigen contractgegevens-SCHEDULE']
 csvwriter.writerow(col_names)
 
 count = 1
@@ -128,11 +126,14 @@ for trace in tree.findall('trace'):
     for datapoint in firstEvent:
         if datapoint.attrib['key']=='time:timestamp':
             firstEventTimestamp = datapoint.attrib['value']
+            firstEventTimestamp = firstEventTimestamp[:-6]
+            
     lastEvent = trace[len(trace) - 1]
     lastEventTimestamp = 0
     for datapoint in lastEvent:
         if datapoint.attrib['key']=='time:timestamp':
             lastEventTimestamp = datapoint.attrib['value']
+            lastEventTimestamp = lastEventTimestamp[:-6]
 
     # finding total prefix lengths
     totalPrefixLength = len(trace.findall('event'))
@@ -273,6 +274,8 @@ for trace in tree.findall('trace'):
         for datapoint in event:
             if datapoint.attrib['key']=='time:timestamp':
                 currentEventTimestamp = datapoint.attrib['value']
+                currentEventTimestamp = currentEventTimestamp[:-6]
+                
         
 
         traceData.append(calcTimeBetweenTwoEvents(currentEventTimestamp, lastEventTimestamp))
