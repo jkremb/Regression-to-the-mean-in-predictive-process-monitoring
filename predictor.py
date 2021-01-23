@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from pandas.core.frame import DataFrame
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
@@ -26,7 +27,6 @@ test_data = dataset[train_size:]
 ############## drop trace at cutoff date from test set
 cutoff_date = test_data.iloc[0,2]
 test_data = test_data.drop((test_data[test_data.firstTraceEventTimestamp == cutoff_date]).index)
-
 
 
 def predict_for_prefix_length_n(n):
@@ -65,20 +65,46 @@ def predict_for_prefix_length_n(n):
         
     plot_prediction()
 
-    plt.hist(test_predictions, bins=100)
-    plt.xlabel('Predictions [Remaining time]')
-    _ = plt.ylabel('Count')
-    plt.show()
+    # plt.hist(test_predictions, bins=100)
+    # plt.xlabel('Predictions [Remaining time]')
+    # _ = plt.ylabel('Count')
+    # plt.show()
 
-    ################ error distribution ################
-    error = test_predictions - test_labels
+    # ################ error distribution ################
+    # error = test_predictions - test_labels
 
-    plt.hist(error, bins=100)
-    plt.xlabel('Prediction Error [Remaining time]')
-    _ = plt.ylabel('Count')
-    plt.show()
+    # plt.hist(error, bins=100)
+    # plt.xlabel('Prediction Error [Remaining time]')
+    # _ = plt.ylabel('Count')
+    # plt.show()
+
+    ##########--------------------- Regression to the mean adjustment ---------------------##########
+    confidence = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+    for c in confidence:
+        mse = DataFrame.mean(np.square(test_predictions - test_labels))
+        print('MSE for confidence '+ str(c) + ' is ' + str(mse))
+
+
+        adjusted_predictions = c*(test_predictions) + DataFrame.median(test_labels)*(1-c)
+        # adjusted_predictions = confidence[0]*(test_predictions) + DataFrame.median(test_labels)*(1 - confidence[0])
+        # median of predic
+
+        mse_adjusted = DataFrame.mean(np.square(adjusted_predictions - test_labels))
+        print('Adjusted MSE for confidence '+ str(c) + ' is ' + str(mse_adjusted))
+
 
 ################## predict all models with separate prefixes ########
-prefix_lengths = [3, 6, 8, 10, 12, 14, 16, 18, 20, 30, 50]
-for prefix in prefix_lengths:
-    predict_for_prefix_length_n(prefix)
+# prefix_lengths = [3, 6, 8, 10, 12, 14, 16, 18, 20, 30, 50]
+# for prefix in prefix_lengths:
+#     predict_for_prefix_length_n(prefix)
+predict_for_prefix_length_n(12)
+
+
+#################
+# confidence = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+# mse = DataFrame.mean(np.square(test_predictions - test_labels))
+
+# adjusted_prediction = c*(test_predictions) + DataFrame.median(test_labels)
+# # median of predic
+
+# mse_adjusted = DataFrame.mean(np.square(test_predictions - test_labels))

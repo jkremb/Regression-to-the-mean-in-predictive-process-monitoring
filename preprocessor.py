@@ -60,7 +60,7 @@ test_labels = test_features.pop('remainingTraceTime')
 
 def train_model_with_prefix_length_n(n):
 
-    ############ drop datapoints where the currentprefixlength < n ##############
+    ############ drop datapoints where the currentprefixlength != n ##############
     train_features_n = train_features.copy()
     train_features_n = train_data.drop((train_data[train_data.currentPrefixLength != n]).index)
 
