@@ -1,3 +1,4 @@
+import csv
 import os
 import numpy as np
 import pandas as pd
@@ -15,6 +16,7 @@ from keras.models import Model, Sequential
 from keras import backend as K
 import numpy as np
 from keras.models import load_model
+from tensorflow.python.keras.callbacks import CSVLogger
 
 ################ necessary dataframes ############
 dataset = pd.read_csv('data_sortedChrono.csv')
@@ -56,7 +58,7 @@ def predict_for_prefix_length_n(n):
         a = plt.axes(aspect='equal')
         plt.scatter(test_labels, test_predictions, facecolors='none', edgecolors='r')
         plt.xlabel('True Values [Remaining time]')
-        plt.ylabel('Predictions [Remaining time]')
+        plt.ylabel('Predictions Prefix Length {} [Remaining time]'.format(n))
         lims = [0, 75000]
         plt.xlim(lims)
         plt.ylim(lims)
@@ -79,6 +81,11 @@ def predict_for_prefix_length_n(n):
     # plt.show()
 
     ##########--------------------- Regression to the mean adjustment ---------------------##########
+    csvdata = open(('results/adjusted_MSE_n'+str(n)+'.csv'), 'w', newline='',encoding='utf-8')
+    csvwriter = csv.writer(csvdata);
+    col_names = ['confidence', 'MSE', 'adjusted_MSE', 'MSE_improvement']
+    csvwriter.writerow(col_names)
+
     confidence = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
     for c in confidence:
         mse = DataFrame.mean(np.square(test_predictions - test_labels))
@@ -86,18 +93,18 @@ def predict_for_prefix_length_n(n):
 
 
         adjusted_predictions = c*(test_predictions) + DataFrame.median(test_labels)*(1-c)
-        # adjusted_predictions = confidence[0]*(test_predictions) + DataFrame.median(test_labels)*(1 - confidence[0])
-        # median of predic
 
         mse_adjusted = DataFrame.mean(np.square(adjusted_predictions - test_labels))
         print('Adjusted MSE for confidence '+ str(c) + ' is ' + str(mse_adjusted))
-
+        row = [c, mse, mse_adjusted, (mse - mse_adjusted)]
+        csvwriter.writerow(row)
+    csvdata.close();
 
 ################## predict all models with separate prefixes ########
-# prefix_lengths = [3, 6, 8, 10, 12, 14, 16, 18, 20, 30, 50]
-# for prefix in prefix_lengths:
-#     predict_for_prefix_length_n(prefix)
-predict_for_prefix_length_n(12)
+prefix_lengths = [3, 6, 10, 12, 18, 20, 30, 50]
+for prefix in prefix_lengths:
+    predict_for_prefix_length_n(prefix)
+# predict_for_prefix_length_n(12)
 
 
 #################

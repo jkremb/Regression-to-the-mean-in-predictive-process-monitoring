@@ -101,19 +101,32 @@ def train_model_with_prefix_length_n(n):
         # Calculate validation results on 20% of the training data
         validation_split = 0.1)
 
+    ##################### plot the loss curves ##############
+    # def plot_loss(history):
+    #     plt.plot(history.history['loss'], label='loss')
+    #     plt.plot(history.history['val_loss'], label='val_loss')
+    #     plt.ylim([3000, 18000])
+    #     plt.xlabel('Epoch')
+    #     plt.ylabel('Error n={} [Trace Time Remaining]'.format(n))
+    #     plt.legend()
+    #     plt.grid(True)
+
+    # plot_loss(history)
+    # plt.show()
+
     ###################### save the model for later use ###########
     dnn_model.save('dnn_model_saved_prefix_length_'+str(n))
 
 ################## train all models with separate prefixes ########
-prefix_lengths = [3, 6, 8, 10, 12, 14, 16, 18, 20, 30, 50]
+prefix_lengths = [3, 6, 10, 12, 18, 20, 30, 50]
 for prefix in prefix_lengths:
     train_model_with_prefix_length_n(prefix)
+# train_model_with_prefix_length_n(13)
 
-# ##################### plot the loss curves ##############
+# 
 
 
 
-# ################# predictions on test set ##################
 
 
 
