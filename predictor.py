@@ -57,8 +57,8 @@ def predict_for_prefix_length_n(n):
     def plot_prediction():
         a = plt.axes(aspect='equal')
         plt.scatter(test_labels, test_predictions, facecolors='none', edgecolors='r')
-        plt.xlabel('True Values [Remaining time]')
-        plt.ylabel('Predictions Prefix Length {} [Remaining time]'.format(n))
+        plt.xlabel('True Values [Remaining time]', fontsize=18)
+        plt.ylabel('Predictions Prefix Length {} [Remaining time]'.format(n), fontsize=18)
         lims = [0, 75000]
         plt.xlim(lims)
         plt.ylim(lims)
