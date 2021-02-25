@@ -73,8 +73,19 @@ def train_model_with_prefix_length_n(n):
     print('------------------------------------------------')
 
     ################# normalize data ########################
+    print('-------------Before normalization: --------------')
+    print(str(train_features_n))
+
     normalizer = preprocessing.Normalization()
     normalizer.adapt(np.array(train_features_n))
+
+    print('-------------After normalization: --------------')
+    first = np.array(train_features_n[:1])
+
+    with np.printoptions(precision=2, suppress=True):
+        print('First example:', first)
+        print()
+        print('Normalized:', normalizer(first).numpy())
 
     ################## build model (Deep neural network) #############
     def build_and_compile_model(norm):
