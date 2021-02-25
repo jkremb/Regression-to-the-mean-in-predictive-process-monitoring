@@ -86,7 +86,7 @@ def predict_for_prefix_length_n(n):
     col_names = ['confidence', 'MSE', 'adjusted_MSE', 'MSE_improvement']
     csvwriter.writerow(col_names)
 
-    confidence = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+    confidence = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
     for c in confidence:
         mse = DataFrame.mean(np.square(test_predictions - test_labels))
         print('MSE for confidence '+ str(c) + ' is ' + str(mse))

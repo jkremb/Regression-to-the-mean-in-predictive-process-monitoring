@@ -10,7 +10,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
 
-graph = pd.DataFrame(index = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])
+graph = pd.DataFrame(index = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])
 prefix_lengths = [3, 6, 10, 12, 18, 20, 30, 50]
 for n in prefix_lengths:
     data = pd.read_csv(('results/adjusted_MSE_n'+str(n)+'.csv'))

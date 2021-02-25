@@ -82,7 +82,7 @@ def train_model_with_prefix_length_n(n):
     print('-------------After normalization: --------------')
     first = np.array(train_features_n[:1])
 
-    with np.printoptions(precision=2, suppress=True):
+    with np.printoptions(precision=15, suppress=True):
         print('First example:', first)
         print()
         print('Normalized:', normalizer(first).numpy())
